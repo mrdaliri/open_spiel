@@ -138,7 +138,7 @@ void TFBatchTrajectoryRecorder::FillInputsAndMasks() {
 
 void TFBatchTrajectoryRecorder::ApplyActions() {
   std::vector<double> prob_dist(num_actions_, 0.0);
-  auto sampled_action = tf_outputs_[1].matrix<int64>();
+  auto sampled_action = tf_outputs_[1].matrix<tensorflow::int64>();
   for (int b = 0; b < batch_size_; ++b) {
     if (!terminal_flags_[b]) {
       Action action = sampled_action(b);
