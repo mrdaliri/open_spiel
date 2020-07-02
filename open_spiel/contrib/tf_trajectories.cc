@@ -43,7 +43,7 @@ TFBatchTrajectoryRecorder::TFBatchTrajectoryRecorder(
       graph_filename_(graph_filename),
       rng_(),
       dist_(0.0, 1.0),
-      flat_input_size_(game_->InformationStateTensorSize()),
+      flat_input_size_(game_->ObservationTensorSize()),
       num_actions_(game_->NumDistinctActions()) {
   TF_CHECK_OK(
       ReadBinaryProto(tf::Env::Default(), graph_filename_, &graph_def_));
@@ -127,7 +127,7 @@ void TFBatchTrajectoryRecorder::FillInputsAndMasks() {
         mask_matrix(b, a) = mask[a];
       }
 
-      states_[b]->InformationStateTensor(states_[b]->CurrentPlayer(),
+      states_[b]->ObservationTensor(states_[b]->CurrentPlayer(),
                                          &info_state_vector);
       for (int i = 0; i < info_state_vector.size(); ++i) {
         inputs_matrix(b, i) = info_state_vector[i];
