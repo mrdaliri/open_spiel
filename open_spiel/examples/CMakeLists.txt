@@ -1,14 +1,7 @@
 # alpha_zero is commented out because we don't support depending on the C++
 # TensorFlow library yet. Fixes/contributions welcome.
-include(FindProtobuf)
-find_package(Protobuf REQUIRED)
-
-find_package(TensorflowCC REQUIRED)
-
-add_executable(alpha_zero_example alpha_zero_example.cc $<TARGET_OBJECTS:alpha_zero> ${OPEN_SPIEL_OBJECTS})
-add_test(alpha_zero_example_test alpha_zero_example)
-
-target_link_libraries(alpha_zero_example ${PROTOBUF_LIBRARIES} TensorflowCC::TensorflowCC)
+# add_executable(alpha_zero_example alpha_zero_example.cc ${OPEN_SPIEL_OBJECTS})
+# add_test(alpha_zero_example_test alpha_zero_example)
 
 add_executable(benchmark_game benchmark_game.cc ${OPEN_SPIEL_OBJECTS})
 add_test(benchmark_game_test benchmark_game --game=tic_tac_toe --sims=100 --attempts=2)
