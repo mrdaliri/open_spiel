@@ -17,6 +17,7 @@
 #define OPEN_SPIEL_GAMES_HEARTS_XINXIN_BOT_H_
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "open_spiel/games/hearts.h"
@@ -32,7 +33,8 @@ Action GetOpenSpielAction(::hearts::card card);
 
 class XinxinBot : public Bot {
  public:
-  explicit XinxinBot(int rules, int num_players = 4);
+  explicit XinxinBot(int rules, int uct_num_runs, double uct_c_val,
+                     int iimc_num_worlds, bool use_threads);
 
   Action Step(const State& state) override;
   void InformAction(const State& state, Player player_id,
@@ -44,9 +46,12 @@ class XinxinBot : public Bot {
   static int XinxinRules(GameParameters params);
 
  private:
+  int uct_num_runs_;
+  double uct_c_val_;
+  int iimc_num_worlds_;
+  bool use_threads_;
   std::unique_ptr<::hearts::SafeSimpleHeartsPlayer> CreatePlayer();
 
-  const int kNumPlayers;
   int num_cards_dealt_;
   ::hearts::tPassDir pass_dir_;
   std::vector<std::vector<::hearts::card>> initial_deal_;
@@ -61,9 +66,13 @@ class XinxinBot : public Bot {
 
   void NewDeal(std::vector<std::vector<::hearts::card>>* initial_cards,
                ::hearts::tPassDir pass_dir, int first_player);
+  void LogStateMismatchError(const State& state, std::string msg);
 };
 
-std::unique_ptr<Bot> MakeXinxinBot(GameParameters params, int num_players);
+std::unique_ptr<Bot> MakeXinxinBot(GameParameters params, int uct_num_runs = 50,
+                                   double uct_c_val = 0.4,
+                                   int iimc_num_worlds = 20,
+                                   bool use_threads = true);
 
 }  // namespace hearts
 }  // namespace open_spiel
