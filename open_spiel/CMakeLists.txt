@@ -188,7 +188,6 @@ endif()
 if (BUILD_WITH_TENSORFLOW_CC)
   add_compile_definitions(BUILD_WITH_TENSORFLOW_CC)
   add_subdirectory(tensorflow_cc/tensorflow_cc)
-  set(OPEN_SPIEL_OBJECTS ${OPEN_SPIEL_OBJECTS} $<TARGET_OBJECTS:tensorflow_cc>)
 endif()
 # We have the parent of this directory in the include path, so that we can
 # include for example "open_spiel/spiel.h" (assuming this directory is named
