@@ -120,4 +120,6 @@ add_executable(trajectories_test trajectories_test.cc
     $<TARGET_OBJECTS:algorithms> ${OPEN_SPIEL_OBJECTS})
 add_test(trajectories_test trajectories_test)
 
-add_subdirectory (alpha_zero)
+if (BUILD_WITH_TENSORFLOW_CC)
+  add_subdirectory (alpha_zero)
+endif ()

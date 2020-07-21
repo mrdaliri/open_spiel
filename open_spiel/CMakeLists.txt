@@ -77,6 +77,8 @@ openspiel_optional_dependency(
 openspiel_optional_dependency(
   BUILD_WITH_LIBTORCH      "Build with support for libtorch.")
 openspiel_optional_dependency(
+  BUILD_WITH_TENSORFLOW_CC "Build with support for Tensorflow C++ API.")
+openspiel_optional_dependency(
   BUILD_WITH_PUBLIC_STATES "Build with support for public states in C++.")
 openspiel_optional_dependency(
   BUILD_WITH_PYTHON        "Build binary for Python.")
@@ -183,7 +185,11 @@ if (BUILD_WITH_LIBTORCH)
   # Use following to link your_target_executable with torch libraries:
   # target_link_libraries(your_target_executable ${TORCH_LIBRARIES})
 endif()
-
+if (BUILD_WITH_TENSORFLOW_CC)
+  add_compile_definitions(BUILD_WITH_TENSORFLOW_CC)
+  add_subdirectory(tensorflow_cc/tensorflow_cc)
+  set(OPEN_SPIEL_OBJECTS ${OPEN_SPIEL_OBJECTS} $<TARGET_OBJECTS:tensorflow_cc>)
+endif()
 # We have the parent of this directory in the include path, so that we can
 # include for example "open_spiel/spiel.h" (assuming this directory is named
 # open_spiel).
@@ -194,7 +200,10 @@ add_subdirectory (examples)
 add_subdirectory (games)
 add_subdirectory (game_transforms)
 add_subdirectory (tests)
-add_subdirectory (contrib)
+
+if (BUILD_WITH_TENSORFLOW_CC)
+  add_subdirectory (contrib)
+endif()
 
 if (BUILD_WITH_PYTHON)
   add_subdirectory (python)

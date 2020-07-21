@@ -144,6 +144,15 @@ if [[ ${BUILD_WITH_LIBTORCH:-"ON"} == "ON" ]] && [[ ! -d ${DIR} ]]; then
   unzip "${DOWNLOAD_FILE}" -d "open_spiel/libtorch/"
 fi
 
+# Add tensorflow_cc project which provides C++ API for Tensorflow
+DIR="open_spiel/tensorflow_cc"
+if [[ ${BUILD_WITH_TENSORFLOW_CC:-"OFF"} == "ON" ]] && [[ ! -d ${DIR} ]]; then
+  git clone -b 'open_spiel' --single-branch --depth 1  https://github.com/mrdaliri/tensorflow_cc.git ${DIR}
+  pushd ${DIR}
+    sudo ./install-requirements.sh
+  popd
+fi
+
 # 2. Install other required system-wide dependencies
 
 # Install Julia if required and not present already.
